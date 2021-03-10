@@ -23,8 +23,10 @@
 	}
 
 	async function fetchTodos() {
+		console.log("fetchTodos");
+		
 		if (useMockStore) {
-			todos = MockStore.instance.getAll();
+			todos = [...MockStore.instance.getAll()];
 		} else {
 			const result = await axios.get(
 				api + "/todos?$limit=50&$sort[created]=-1"
@@ -45,6 +47,12 @@
 		Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
 		how to build Svelte apps.
 	</p>
+	<label for="store">Use in memory store</label>
+	<input
+		on:change={() => enableMockStore.update(() => !useMockStore)}
+		name="store"
+		type="checkbox"
+	/>
 
 	<Form {api} on:submitted={reload} />
 	{#if todos}

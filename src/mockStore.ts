@@ -1,7 +1,7 @@
 export class MockStore {
 
     private static _instance: MockStore;
-    private static _store: any[];
+    private static _store: any[] = [];
 
     public static get instance() {
         if (!MockStore._instance) {
@@ -11,11 +11,14 @@ export class MockStore {
     }
 
     public getAll() {
+        console.log(MockStore._store);
         return MockStore._store;
     }
 
     public add(todo) {
-        MockStore._store = [todo, ...MockStore._store];
+        MockStore._store = [{...todo, _id:Math.random()}, ...MockStore._store];
+        console.log(MockStore._store);
+
     }
 
     public toggleCompleted(id) {

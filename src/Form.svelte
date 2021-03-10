@@ -1,7 +1,15 @@
 <script lang="ts">
     import axios from "axios";
     import { createEventDispatcher } from "svelte";
+    import { MockStore } from "./mockStore";
+    import { enableMockStore } from "./store";
+
     export let api;
+
+    let useMockStore: boolean = false;
+    const unsubscribe = enableMockStore.subscribe((value) => {
+        useMockStore = value;
+    });
 
     const dispatch = createEventDispatcher();
 
@@ -18,13 +26,19 @@
 
     function submit() {
         console.log("Submit");
-
-        axios.post(api + "/todos/", todo).then((r) => {
+        if (useMockStore) {
+            MockStore.instance.add(todo);
             todo.title = "";
             todo.description = "";
             todo.important = false;
-            dispatch("submitted");
-        });
+        } else {
+            axios.post(api + "/todos/", todo).then((r) => {
+                todo.title = "";
+                todo.description = "";
+                todo.important = false;
+            });
+        }
+        dispatch("submitted");
     }
 </script>
 

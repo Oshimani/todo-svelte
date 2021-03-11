@@ -2,9 +2,9 @@
     import axios from "axios";
     import { createEventDispatcher } from "svelte";
     import { MockStore } from "./mockStore";
+    import { enableMockStore } from "./store";
     export let todo;
     export let api;
-    import { enableMockStore } from "./store";
 
     let useMockStore: boolean = false;
     const unsubscribe = enableMockStore.subscribe((value) => {
